@@ -9,33 +9,34 @@ class ClienteController extends Controller
 {
     //
 
-    public function store(Request $request){
-    $verificacao = Cliente::where('cpf','=', $request)-> first();
+    public function store(Request $request)
+    {
+        $verificacao = Cliente::where('cpf', '=', $request->cpf)->first();
 
-        $cliente = Cliente::create([
+        if ($verificacao == null) {
+            $cliente = Cliente::create([
             'nome'=> $request->nome,
             'cpf'=> $request->cpf,
             'idade'=> $request->idade
         ]);
-
         
+            return response()->json($cliente);
 
-        if (!$verificacao) {
-        return response()->json($cliente);
-        }
-        else {
-            return response()->json('Este CPF já está sendo utilizado.');
-        }
+        } else {
+             return response()->json('Este CPF já está sendo utilizado.');
+    }
 
     }
 
-    public function index() {
+    public function index()
+    {
         $clientes = Cliente::all();
 
         return response()->json($clientes);
     }
 
-    public function show($id){
+    public function show($id)
+    {
         $cliente = Cliente::find($id);
 
         if (!$id) {
@@ -46,7 +47,7 @@ class ClienteController extends Controller
 
     public function update($id, Request $request)
     {
-        $verificacao = Cliente::where('cpf','=', $request)-> first();
+        $verificacao = Cliente::where('cpf', '=', $request)->first();
         $cliente = Cliente::find($id);
 
         if (!$cliente) {
@@ -79,5 +80,4 @@ class ClienteController extends Controller
 
         return response()->json('Cliente deletado com sucesso.');
     }
-
 }
