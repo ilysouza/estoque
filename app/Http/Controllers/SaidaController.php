@@ -39,13 +39,13 @@ class SaidaController extends Controller
     }
 
     public function delete($id){
-        $saida = Saida::find($id);
-
-        $produto = Produto::find($saida->id_produto);
+        $saida = Saida::find($id);        
 
         if (!$saida) {
             return response()->json('Saida não encontrada.');
         } else {
+
+        $produto = Produto::find($saida->id_produto);
 
         $saida->delete();
         $produto->quantidade_estoque = $produto->quantidade_estoque + $saida->quantidade;
